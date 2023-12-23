@@ -158,7 +158,7 @@ class _SigninPageState extends State<SigninPage> {
                       await PrefrencesService.prefs?.setBool('isLogin', true);
 
                       Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
+                          MaterialPageRoute(builder: (_) => HomePage()));
                     }
                   },
                   child: Text("Sign in",

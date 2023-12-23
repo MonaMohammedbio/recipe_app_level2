@@ -67,7 +67,7 @@ class _introPageState extends State<introPage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(20, 50, 0, 25),
+                padding: EdgeInsets.fromLTRB(20, 20, 0, 25),
                 child: TextButton(
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (contxt)=>SigninPage()));
