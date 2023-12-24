@@ -6,5 +6,8 @@ abstract class PrefrencesService {
 
   static bool checkUser() {
     return prefs?.getBool('isLogin') ?? false;
+
+
+
   }
 }
