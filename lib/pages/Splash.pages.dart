@@ -37,35 +37,38 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       body: Center(
         child: Stack(children: [
-          Image(
-              color: Colors.black38,
-            colorBlendMode: BlendMode.darken,
+          Container(
+            width: 400,
+            height: 1900,
+            child: Image(
+                     fit: BoxFit.cover,
+                color: Colors.black38,
+              colorBlendMode: BlendMode.darken,
 
-              image: AssetImage("images/splash.png")),
+                image: AssetImage("images/splash.jpg")),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding:EdgeInsets.fromLTRB(85, 0,0,0),
+                padding:EdgeInsets.fromLTRB(110, 0,0,0),
 
                 child: Text(
                 textAlign: TextAlign.center,
                     style: TextStyle(
-                          color: Colors.white54,fontFamily:"Hellix",fontWeight: FontWeight.w100),
+                         fontSize: 15, color: Colors.white,fontFamily:"Hellix",fontWeight: FontWeight.w100),
                     "Cooking Done The Easy Way"),
               ),
             ],
           ),
 
-          Container(
-
-            padding: EdgeInsets.fromLTRB(60, 170,0,0),
-
+          Padding(
+            padding: EdgeInsets.fromLTRB(60, 160,0,0),
             child: Image(
               color: Colors.black12,
             colorBlendMode: BlendMode.darken,
-                height: 220,
-                width: 220,
+                height: 270,
+                width:270,
                 image: AssetImage("images/Logo.png")),
           )
         ]),

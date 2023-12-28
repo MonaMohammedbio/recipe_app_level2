@@ -14,19 +14,24 @@ class _registerPageState extends State<registerPage> {
     return Scaffold(
       body: Center(
         child: Stack(children: [
-          Image(
-              color: Colors.black38,
-              colorBlendMode: BlendMode.darken,
-              image: AssetImage("images/splash.png")),
+          Container(
+            width: 400,
+            height: 1900,
+            child: Image(
+              fit: BoxFit.cover,
+                color: Colors.black38,
+                colorBlendMode: BlendMode.darken,
+                image: AssetImage("images/splash.jpg")),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(130, 0, 0, 240),
+                padding: EdgeInsets.fromLTRB(150, 60, 0, 240),
                 child: Text(
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         fontFamily: "Hellix"),
@@ -35,28 +40,28 @@ class _registerPageState extends State<registerPage> {
             ],
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(70, 70, 0, 0),
+            padding: EdgeInsets.fromLTRB(60,40, 0, 0),
             child: Image(
                 color: Colors.black12,
                 colorBlendMode: BlendMode.difference,
-                height: 200,
-                width: 200,
+                height: 270,
+                width: 270,
                 image: AssetImage("images/Logo.png")),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(30, 300, 0, 0),
+            padding: EdgeInsets.fromLTRB(50, 330, 0, 0),
             child: SizedBox(
               width: 285,
               height: 50,
               child: TextFormField(
-                  style: TextStyle(color:Colors.white70),
+                  style: TextStyle(color:Colors.white),
                 decoration: InputDecoration(
                     prefixIcon: Icon(Icons.person_4_outlined,
-                        color: Colors.white70, size: 20),
+                        color: Colors.white, size: 30),
                     floatingLabelStyle: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white70,
+                        color: Colors.white,
                         fontFamily: "Hellix"),
                     filled: false,
                     border: UnderlineInputBorder(),
@@ -65,22 +70,22 @@ class _registerPageState extends State<registerPage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(30, 360, 0, 0),
+            padding: EdgeInsets.fromLTRB(50, 395, 0, 0),
             child: SizedBox(
               width: 285,
               height: 50,
               child: TextFormField(
-                style: TextStyle(color:Colors.white70),
+                style: TextStyle(color:Colors.white),
                 decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.email_outlined,
-                      color: Colors.white70,
-                      size: 20,
+                      color: Colors.white,
+                      size: 30,
                     ),
                     floatingLabelStyle: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white70,
+                        color: Colors.white,
                         fontFamily: "Hellix"),
                     filled: false,
                     border: UnderlineInputBorder(),
@@ -89,23 +94,23 @@ class _registerPageState extends State<registerPage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(30, 425, 0, 0),
+            padding: EdgeInsets.fromLTRB(50, 460, 0, 0),
             child: SizedBox(
               width: 285,
               height: 50,
               child: TextFormField(
-                style: TextStyle(color:Colors.white70),
+                style: TextStyle(color:Colors.white),
                 decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.lock_outline_rounded,
-                      color: Colors.white70,
-                      size: 20,
+                      color: Colors.white,
+                      size: 30,
                     ),
-                    suffixIcon: Icon(Icons.visibility_off_outlined, size: 20),
+                    suffixIcon: Icon(Icons.visibility_off_outlined, size:30,color: Colors.white,),
                     floatingLabelStyle: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white70,
+                        color: Colors.white,
                         fontFamily: "Hellix"),
                     filled: false,
                     border: UnderlineInputBorder(),
@@ -114,10 +119,10 @@ class _registerPageState extends State<registerPage> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(20, 530, 0, 0),
+            padding: EdgeInsets.fromLTRB(40, 590, 0, 0),
             child: SizedBox(
-              width: 285,
-              height: 45,
+              width: 320,
+              height: 50,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -129,20 +134,21 @@ class _registerPageState extends State<registerPage> {
                   },
                   child: Text("Register",
                       style: TextStyle(
+                          fontSize: 18,
                           color: Colors.white,
                           fontFamily: "Hellix",
-                          fontWeight: FontWeight.w100))),
+                          fontWeight: FontWeight.bold))),
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(70, 690, 0, 0),
+            padding: EdgeInsets.fromLTRB(80, 710, 0, 0),
             child: Row(
               children: [
                 Text(
                   "Already registered?",
                   style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.white70,
+                      fontSize: 16,
+                      color: Colors.white,
                       fontFamily: "Hellix"),
                 ),
                 TextButton(
@@ -155,7 +161,7 @@ class _registerPageState extends State<registerPage> {
                     child: Text(
                       "Sign in",
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize:16,
                           color: Colors.deepOrange,
                           fontFamily: "Hellix",
                           fontWeight: FontWeight.w100),

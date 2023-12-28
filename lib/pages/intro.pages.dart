@@ -15,19 +15,24 @@ class _introPageState extends State<introPage> {
     return Scaffold(
       body: Center(
         child: Stack(children: [
-          Image(
-              color: Colors.black38,
-              colorBlendMode: BlendMode.darken,
-              image: AssetImage("images/splash.png")),
+          Container(
+            width: 400,
+            height: 1900,
+            child: Image(
+                fit: BoxFit.cover,
+                color: Colors.black38,
+                colorBlendMode: BlendMode.darken,
+                image: AssetImage("images/splash.jpg")),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(85, 0, 0, 0),
+                padding: EdgeInsets.fromLTRB(110, 0,0,0),
                 child: Text(
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: Colors.white54,
+                        fontSize: 15, color: Colors.white,
                         fontFamily: "Hellix",
                         fontWeight: FontWeight.w100),
                     "Cooking Done The Easy Way"),
@@ -35,21 +40,21 @@ class _introPageState extends State<introPage> {
             ],
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(60, 170, 0, 0),
+            padding: EdgeInsets.fromLTRB(60, 160,0,0),
             child: Image(
                 color: Colors.black12,
                 colorBlendMode: BlendMode.darken,
-                height: 220,
-                width: 220,
+                height: 270,
+                width: 270,
                 image: AssetImage("images/Logo.png")),
           ),
           Column(
             children: [
               Padding(
-                padding: EdgeInsets.fromLTRB(20, 580, 0, 0),
+                padding: EdgeInsets.fromLTRB(40, 610, 0, 0),
                 child: SizedBox(
-                  width: 285,
-                  height: 45,
+                  width: 330,
+                  height: 50,
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -60,6 +65,7 @@ class _introPageState extends State<introPage> {
                       },
                       child: Text("Register",
                           style: TextStyle(
+                            fontSize: 18,
                               color: Colors.white,
                               fontFamily: "Hellix",
 
@@ -73,7 +79,7 @@ class _introPageState extends State<introPage> {
                       Navigator.push(context, MaterialPageRoute(builder: (contxt)=>SigninPage()));
                     },
                     child: Text(
-                      "Sign in",style: TextStyle(color: Colors.white,fontFamily: "Hellix",fontWeight: FontWeight.w100),
+                      "Sign in",style: TextStyle(fontSize:18,color: Colors.white,fontFamily: "Hellix",fontWeight: FontWeight.w100),
                     )),
               )
             ],
