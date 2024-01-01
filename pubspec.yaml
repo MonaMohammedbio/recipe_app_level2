@@ -39,6 +39,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   carousel_slider: ^4.2.1
   dots_indicator: ^3.0.0
+  font_awesome_flutter: ^10.6.0
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +67,10 @@ flutter:
   assets:
     - images/splash.jpg
     - images/Logo.png
+    - images/CinnamonToaast.png
+    - images/GlazedSalmon.png
+    - images/Muffins.png
+    - images/frenshtoast.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -83,9 +88,9 @@ flutter:
        fonts:
          - asset: fonts/Hellix-Regular.ttf
 
-#     - family: Trajan Pro
-#       fonts:
-#         - asset: fonts/TrajanPro.ttf
+     - family: fonts/Abril_Display
+       fonts:
+         - asset: fonts/Abril_Display_Black.otf
 #         - asset: fonts/TrajanPro_Bold.ttf
 #           weight: 700
 
