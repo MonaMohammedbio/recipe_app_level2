@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:recipe_app_level2/pages/homepage.pages.dart';
 import 'package:recipe_app_level2/pages/intro.pages.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 import '../services/shared prefrences.services.dart';
@@ -23,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
 
   void initSplash() async {
     await Future.delayed(const Duration(seconds: 3));
-    if (GetIt.I.get<SharedPreferences>().getBool("isLogin")??false) {
+    if (PrefrencesService.checkUser()) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (_) => HomePage()));
       // go to home page
