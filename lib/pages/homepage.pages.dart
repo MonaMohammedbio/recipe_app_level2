@@ -175,6 +175,7 @@ class _HomePageState extends State<HomePage> {
                   setState(() {});
                 },
                 decorator: DotsDecorator(
+                  activeColor: Colors.deepOrange,
                   size: const Size.square(9.0),
                   activeSize: const Size(18.0, 9.0),
                   activeShape: RoundedRectangleBorder(
