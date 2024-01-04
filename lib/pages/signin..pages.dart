@@ -1,8 +1,9 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:recipe_app_level2/pages/Register.pages.dart';
 import 'package:recipe_app_level2/pages/homepage.pages.dart';
-import 'package:recipe_app_level2/services/shared%20prefrences.services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({super.key});
@@ -93,7 +94,7 @@ class _SigninPageState extends State<SigninPage> {
                             fontFamily: "Hellix"),
                         filled: false,
                         border: UnderlineInputBorder(),
-                        labelText: "Email Adress"),
+                    hintText: "Email Adress",labelStyle: TextStyle(color: Colors.white)),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'email is required';
@@ -137,7 +138,7 @@ class _SigninPageState extends State<SigninPage> {
                             fontFamily: "Hellix"),
                         filled: false,
                         border: UnderlineInputBorder(),
-                        labelText: "Password"),
+                        hintText: "Password",labelStyle: TextStyle(color: Colors.white)),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'password is required';
@@ -171,7 +172,7 @@ class _SigninPageState extends State<SigninPage> {
                         backgroundColor: Colors.deepOrange),
                     onPressed: () async {
                       if (fromKey.currentState?.validate() ?? false) {
-                        await PrefrencesService.prefs?.setBool('isLogin', true);
+                        GetIt.I.get<SharedPreferences>().setBool("isLogin", true);
 
                         Navigator.pushReplacement(
                             context,
