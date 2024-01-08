@@ -41,6 +41,7 @@ dependencies:
   dots_indicator: ^3.0.0
   font_awesome_flutter: ^10.6.0
   get_it: ^7.6.4
+  flutter_bloc: ^8.1.3
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,7 @@ flutter:
     - images/GlazedSalmon.png
     - images/Muffins.png
     - images/frenshtoast.png
+    - Assets/data/sample.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -89,9 +91,10 @@ flutter:
        fonts:
          - asset: fonts/Hellix-Regular.ttf
 
-     - family: fonts/Abril_Display
+     - family: LibreBaskerville
        fonts:
-         - asset: fonts/Abril_Display_Black.otf
+         - asset: fonts/LibreBaskerville-Bold.ttf
+           weight: 700
 #         - asset: fonts/TrajanPro_Bold.ttf
 #           weight: 700
 

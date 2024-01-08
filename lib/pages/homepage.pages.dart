@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:recipe_app_level2/cubit/ad_cubit.dart';
+
+import '../models/ad.models.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,27 +19,52 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var sliderIndex = 0;
   CarouselController carouselControllerEx = CarouselController();
-  List<String> imgList = [
-    "images/CinnamonToaast.png",
-    "images/GlazedSalmon.png",
-    "images/Muffins.png",
-  ];
-  var listTitles = ["CinnamonToast", "GlazedSalmon", "Muffins"];
+ List<Ad> adsList =[];
+  
+//   void  getAds()async{
+//     var adsData = await rootBundle.loadString('Assets/data/sample.json');
+//     var dataDecoded= List<Map<String,dynamic>>.from(jsonDecode(adsData)["ads"]);
+//     adsList =dataDecoded.map((e)=>Ad.fromJason(e)).toList();
+// setState(() {
+//
+// });
+//   }
+// @override
+// void initState() {
+//    getAds();
+//     super.initState();
+//   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            leading: IconButton(
-                onPressed: () {}, icon: FaIcon(FontAwesomeIcons.barsStaggered)),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: IconButton(
-                    onPressed: () {}, icon: Icon(Icons.notifications_none,size: 30,)),
-              )
-            ]),
-        body: SafeArea(
-          child: SingleChildScrollView(
+      appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {}, icon: FaIcon(FontAwesomeIcons.barsStaggered)),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.notifications_none,
+                    size: 30,
+                  )),
+            )
+          ]),
+      body: SafeArea(
+          child: BlocConsumer<AdCubit, AdState>(
+  listener: (context, state) {
+
+  },
+  builder: (context, state) {
+    if (state.isNotEmpty) {
+    return
+    Column(
+      children: [
+    state
+        .map(
+    (e) =>
+        SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(children: [
               Padding(
@@ -48,8 +79,8 @@ class _HomePageState extends State<HomePage> {
               Text(
                 "What would you like to cook today?",
                 style: TextStyle(
-                    fontFamily: "Abril_Display_Black",
-                    fontSize: 22,
+                    fontFamily: "LibreBaskerville",
+                    fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: Colors.black),
               ),
@@ -100,9 +131,9 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.only(left: 20),
                     child: Text("Today's Fresh Recipes",
                         style: TextStyle(
-                            fontFamily: "LibreBaskerville",
+                            fontFamily: "Hellix",
                             fontSize: 20,
-                            fontWeight: FontWeight.w700,
+                            fontWeight: FontWeight.w900,
                             color: Colors.black)),
                   ),
                   Padding(
@@ -117,57 +148,56 @@ class _HomePageState extends State<HomePage> {
                   )
                 ],
               ),
-              Stack(
-                children: [
-                  CarouselSlider(
-                    carouselController: carouselControllerEx,
-                    options: CarouselOptions(
-                        height:200.0,
-                        autoPlay: true,
-                        viewportFraction: 0.75,
-                        enlargeCenterPage: true,
-                        enlargeFactor: 0.3,
-                        onPageChanged: (index, _) {
-                          sliderIndex = index;
-                          setState(() {});
-                        },
-                        enlargeStrategy: CenterPageEnlargeStrategy.height),
-                    items: imgList.map((item) {
-                      return Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.symmetric(horizontal: 5.0),
-                          child: Stack(
-                            children: [
-                              Text('$listTitles'),
-                              Image.asset(item),
-                            ],
-                          ));
-                    }).toList(),
-                  ),
-                  Positioned.fill(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                              onPressed: () async {
-                                await carouselControllerEx.nextPage();
-                              },
-                              icon: Icon(Icons.arrow_back_ios)),
-                          IconButton(
-                              onPressed: () async {
-                                await carouselControllerEx.previousPage();
-                              },
-                              icon: Icon(Icons.arrow_forward_ios))
-                        ],
+              CarouselSlider(
+                carouselController: carouselControllerEx,
+                options: CarouselOptions(
+                    height: 200.0,
+                    autoPlay: true,
+                    viewportFraction: 0.75,
+                    enlargeCenterPage: true,
+                    enlargeFactor: 0.3,
+                    onPageChanged: (index, _) {
+                      sliderIndex = index;
+                      setState(() {});
+                    },
+                    enlargeStrategy: CenterPageEnlargeStrategy.height),
+                items:adsList.map((ads) {
+                  return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(
+                        image:DecorationImage(fit:BoxFit.cover ,
+                            image:NetworkImage(ads.image.toString()))
                       ),
-                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Container(child: Text(style:TextStyle(backgroundColor: Colors.black38,color: Colors.white),ads.title.toString())),
+                    ) ,
+                  );
+                }).toList(),
+              ),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                          onPressed: () async {
+                            await carouselControllerEx.nextPage();
+                          },
+                          icon: Icon(Icons.arrow_back_ios)),
+                      IconButton(
+                          onPressed: () async {
+                            await carouselControllerEx.previousPage();
+                          },
+                          icon: Icon(Icons.arrow_forward_ios))
+                    ],
                   ),
-                ],
+                ),
               ),
               DotsIndicator(
-                dotsCount: listTitles.length,
+                dotsCount:adsList.length,
                 position: sliderIndex,
                 onTap: (position) async {
                   await carouselControllerEx.animateToPage(position);
@@ -182,188 +212,206 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(5.0)),
                 ),
               ),
-              GridView.count(
-                shrinkWrap: true,
-                  crossAxisCount: 2,
-                children: [
-                  Card(
-                  child: Column(
+              Container(
+                height: 270,
+                width: 240,
+                decoration: BoxDecoration(color:Colors.grey[200],
+                  borderRadius: BorderRadius.circular(20)
 
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                      Icon(FontAwesomeIcons.heart),
-                      AspectRatio(
-                        aspectRatio: 18.0 / 11.0,
-                        child: Image.asset('images/frenshtoast.png'),
-                      ),
-                      Text(
-                        "Breakfast",
-                        style: TextStyle(color: Colors.cyan[600]),
-                      ),
-                      Text('Frensh Toast with Berries',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: "Hellix",
-                              fontSize: 15)),
-                      Row(children: [
-                        Icon(
-                          Icons.star,
-                          size: 18,
-                          color: Colors.deepOrange,
-                        ),
-
-                        Icon(
-                          Icons.star,
-                          size: 18,
-                          color: Colors.deepOrange,
-                        ),
-                        Icon(
-                          Icons.star,
-                          size: 18,
-                          color: Colors.deepOrange,
-                        ),
-                        Icon(
-                          Icons.star,
-                          size: 18,
-                          color: Colors.deepOrange,
-                        ),
-                        Icon(
-                          Icons.star,
-                          size: 18,
-                          color: Colors.deepOrange,
-                        ),
-                      ],)
-                     , Text("120 Calories",style: TextStyle(color: Colors.deepOrange,fontSize: 12),),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.access_time,
-                                  size: 15,
-                                  color: Colors.grey),
-
-                                Text("10 min:",
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                  ),
-                                ),
-                              ],
-                            ),
-
-
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.room_service_outlined,
-                                  size: 15,
-                                  color: Colors.grey,
-                                ),
-                                Text("1 Serving:",
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                  ),),
-                              ],
-                            ),
-
-
-
-                          ]),
-                    ],
-                  ),
                 ),
-                  Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(FontAwesomeIcons.solidHeart,color: Colors.deepOrange,),
-                        AspectRatio(
-                          aspectRatio: 18.0 / 11.0,
-                          child: Image.asset('images/CinnamonToaast.png'),
-                        ),
-                        Text(
-                          "Breakfast",
-                          style: TextStyle(color: Colors.cyan[600]),
-                        ),
-                        Text('Brown Sugar Cinnamon Toast',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: "Hellix",
-                                fontSize: 15)),
-                        Row(children: [
-                          Icon(
-                            Icons.star,
-                            size: 18,
-                            color: Colors.deepOrange,
-                          ),
 
-                          Icon(
-                            Icons.star,
-                            size: 18,
-                            color: Colors.deepOrange,
-                          ),
-                          Icon(
-                            Icons.star,
-                            size: 18,
-                            color: Colors.deepOrange,
-                          ),
-                          Icon(
-                            Icons.star,
-                            size: 18,
-                            color: Colors.deepOrange,
-                          ),
-                          Icon(
-                            Icons.star,
-                            size: 18,
-                            color: Colors.grey,
-                          ),
-                        ],)
-                        , Text("135 Calories",style: TextStyle(color: Colors.deepOrange,fontSize: 12),),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                      Icons.access_time,
-                                      size: 15,
-                                      color: Colors.grey),
-
-                                  Text("15 min:",
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                    ),
-                                  ),
-                                ],
-                              ),
-
-
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.room_service_outlined,
-                                    size: 15,
-                                    color: Colors.grey,
-                                  ),
-                                  Text("1 Serving:",
-                                    style: TextStyle(
-                                      fontSize: 11,
-                                    ),),
-                                ],
-                              ),
-
-
-
-                            ]),
-                      ],
-                    ),
-                  ),
-             ] ),
-
+              )
+              // ListView.builder(
+              //   scrollDirection: Axis.horizontal,
+              //     shrinkWrap: true,
+              //     itemCount: 1,
+              //     itemBuilder: (context, int) {
+              //     return
+              //       // return Column(children: [
+              //       // //   K(
+              //       //     child: Column(
+              //       //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       //       children: [
+              //       //         Icon(FontAwesomeIcons.heart),
+              //       //         AspectRatio(
+              //       //           aspectRatio: 18.0 / 11.0,
+              //       //           child: Image.asset('images/frenshtoast.png'),
+              //       //         ),
+              //       //         Text(
+              //       //           "Breakfast",
+              //       //           style: TextStyle(color: Colors.cyan[600]),
+              //       //         ),
+              //       //         Text('Frensh Toast with Berries',
+              //       //             style: TextStyle(
+              //       //                 color: Colors.black,
+              //       //                 fontFamily: "Hellix",
+              //       //                 fontSize: 15)),
+              //       //         Row(
+              //       //           children: [
+              //       //             Icon(
+              //       //               Icons.star,
+              //       //               size: 18,
+              //       //               color: Colors.deepOrange,
+              //       //             ),
+              //       //             Icon(
+              //       //               Icons.star,
+              //       //               size: 18,
+              //       //               color: Colors.deepOrange,
+              //       //             ),
+              //       //             Icon(
+              //       //               Icons.star,
+              //       //               size: 18,
+              //       //               color: Colors.deepOrange,
+              //       //             ),
+              //       //             Icon(
+              //       //               Icons.star,
+              //       //               size: 18,
+              //       //               color: Colors.deepOrange,
+              //       //             ),
+              //       //             Icon(
+              //       //               Icons.star,
+              //       //               size: 18,
+              //       //               color: Colors.deepOrange,
+              //       //             ),
+              //       //           ],
+              //       //         ),
+              //       //         Text(
+              //       //           "120 Calories",
+              //       //           style:
+              //       //               TextStyle(color: Colors.deepOrange, fontSize: 12),
+              //       //         ),
+              //       //         Row(
+              //       //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       //             children: [
+              //       //               Row(
+              //       //                 children: [
+              //       //                   Icon(Icons.access_time,
+              //       //                       size: 15, color: Colors.grey),
+              //       //                   Text(
+              //       //                     "10 min:",
+              //       //                     style: TextStyle(
+              //       //                       fontSize: 11,
+              //       //                     ),
+              //       //                   ),
+              //       //                 ],
+              //       //               ),
+              //       //               Row(
+              //       //                 children: [
+              //       //                   Icon(
+              //       //                     Icons.room_service_outlined,
+              //       //                     size: 15,
+              //       //                     color: Colors.grey,
+              //       //                   ),
+              //       //                   Text(
+              //       //                     "1 Serving:",
+              //       //                     style: TextStyle(
+              //       //                       fontSize: 11,
+              //       //                     ),
+              //       //                   ),
+              //       //                 ],
+              //       //               ),
+              //       //             ]),
+              //       //       ],
+              //       //     ),
+              //       //   ),
+              //       //   Card(
+              //       //     child: Column(
+              //       //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       //       children: [
+              //       //         Icon(
+              //       //           FontAwesomeIcons.solidHeart,
+              //       //           color: Colors.deepOrange,
+              //       //         ),
+              //       //         AspectRatio(
+              //       //           aspectRatio: 18.0 / 11.0,
+              //       //           child: Image.asset('images/CinnamonToaast.png'),
+              //       //         ),
+              //       //         Text(
+              //       //           "Breakfast",
+              //       //           style: TextStyle(color: Colors.cyan[600]),
+              //       //         ),
+              //       //         Text('Brown Sugar Cinnamon Toast',
+              //       //             style: TextStyle(
+              //       //                 color: Colors.black,
+              //       //                 fontFamily: "Hellix",
+              //       //                 fontSize: 15)),
+              //       //         Row(
+              //       //           children: [
+              //       //             Icon(
+              //       //               Icons.star,
+              //       //               size: 18,
+              //       //               color: Colors.deepOrange,
+              //       //             ),
+              //       //             Icon(
+              //       //               Icons.star,
+              //       //               size: 18,
+              //       //               color: Colors.deepOrange,
+              //       //             ),
+              //       //             Icon(
+              //       //               Icons.star,
+              //       //               size: 18,
+              //       //               color: Colors.deepOrange,
+              //       //             ),
+              //       //             Icon(
+              //       //               Icons.star,
+              //       //               size: 18,
+              //       //               color: Colors.deepOrange,
+              //       //             ),
+              //       //             Icon(
+              //       //               Icons.star,
+              //       //               size: 18,
+              //       //               color: Colors.grey,
+              //       //             ),
+              //       //           ],
+              //       //         ),
+              //       //         Text(
+              //       //           "135 Calories",
+              //       //           style:
+              //       //               TextStyle(color: Colors.deepOrange, fontSize: 12),
+              //       //         ),
+              //       //         Row(
+              //       //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       //             children: [
+              //       //               Row(
+              //       //                 children: [
+              //       //                   Icon(Icons.access_time,
+              //       //                       size: 15, color: Colors.grey),
+              //       //                   Text(
+              //       //                     "15 min:",
+              //       //                     style: TextStyle(
+              //       //                       fontSize: 11,
+              //       //                     ),
+              //       //                   ),
+              //       //                 ],
+              //       //               ),
+              //       //               Row(
+              //       //                 children: [
+              //       //                   Icon(
+              //       //                     Icons.room_service_outlined,
+              //       //                     size: 15,
+              //       //                     color: Colors.grey,
+              //       //                   ),
+              //       //                   Text(
+              //       //                     "1 Serving:",
+              //       //                     style: TextStyle(
+              //       //                       fontSize: 11,
+              //       //                     ),
+              //       //                   ),
+              //       //                 ],
+              //       //               ),
+              //       //             ]),
+              //       //       ],
+              //       //     ),
+              //       //   )
+              //       // ]);
+              //
+              //      ; })
             ]),
           ),
-        ));
+      ],
+    );
+  },
+)),
+    );
   }
 }

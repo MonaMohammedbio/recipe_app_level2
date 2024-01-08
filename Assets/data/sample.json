@@ -1,8 +1,17 @@
 {
-"Ads":[
-  {},
-  {},
-  {}
+"ads":[
+  {
+    "title": "New Meals",
+    "image": "https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fit,w_730,h_913/k%2FPhoto%2FSeries%2F2019-09-snapshot-cooking-garlic-butter%2F2019-09-04_Kitchn83894_"
+  },
+  {
+    "title": "Healthy Meals",
+    "image":"https://www.eatingwell.com/thmb/OAYhGtEKJmD7HW0Azd6uZCxVIiA=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/cheesy-portobello-chicken-cutlets-with-broccoli-ae1449c758834bb7ac75437e37a14065.jpg"
+  },
+  {
+    "title": "Less Carbs Meals",
+    "image": "https://www.eatingwell.com/thmb/OAYhGtEKJmD7HW0Azd6uZCxVIiA=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/cheesy-portobello-chicken-cutlets-with-broccoli-ae1449c758834bb7ac75437e37a14065.jpg"
+  }
 
 ]
 
