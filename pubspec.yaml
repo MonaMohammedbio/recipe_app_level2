@@ -42,7 +42,7 @@ dependencies:
   font_awesome_flutter: ^10.6.0
   get_it: ^7.6.4
   flutter_bloc: ^8.1.3
-
+  provider: ^6.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -69,10 +69,11 @@ flutter:
   assets:
     - images/splash.jpg
     - images/Logo.png
-    - images/CinnamonToaast.png
+    - images/Cinnamon Toaast.png
     - images/GlazedSalmon.png
     - images/Muffins.png
-    - images/frenshtoast.png
+    - images/freshtoast.png
+
     - Assets/data/sample.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
