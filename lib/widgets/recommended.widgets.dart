@@ -24,7 +24,7 @@ class _RecommendedrecipesState extends State<Recommendedrecipes> {
       "time": "45 min",
       "serving": "1 Serving"
     },
-    {}
+
   ];
   @override
   Widget build(BuildContext context) {

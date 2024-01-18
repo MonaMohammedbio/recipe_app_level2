@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var sliderIndex = 0;
+int sliderIndex = 0;
   CarouselController carouselControllerEx = CarouselController();
   // List<Ad> adsList = [];
   //
@@ -36,10 +36,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     // getAds();
+   Provider.of<AdsProvider>(context,listen: false).getAds();
     super.initState();
-    void init ()async{
-      await Provider.of<AdsProvider>(context).getAds();
-    }
+
   }
 
   @override
@@ -60,9 +59,11 @@ class _HomePageState extends State<HomePage> {
               )
             ]),
         body: SafeArea(
+
           child: SingleChildScrollView(
               //scrollDirection: Axis.vertical,
-             child: Consumer<AdsProvider>(builder: (context,AdsProvider,child){
+             child: Consumer<AdsProvider>(builder: (context,value,child){
+
                 return Column(
                     children: [
 
@@ -160,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                               setState(() {});
                             },
                             enlargeStrategy: CenterPageEnlargeStrategy.height),
-                        items: AdsProvider.ads.map((ads) {
+                        items: value.adsList.map((ads) {
                           return Container(
                             width: MediaQuery.of(context).size.width,
                             margin: EdgeInsets.symmetric(horizontal: 5.0),
@@ -195,10 +196,12 @@ class _HomePageState extends State<HomePage> {
                                 await carouselControllerEx.previousPage();
                               },
                               icon: Icon(Icons.arrow_forward_ios))
+
                         ],
                       ),
+
                       DotsIndicator(
-                        dotsCount: AdsProvider.ads.length,
+                        dotsCount: (value.adsList?.length ?? 0) > 0 ? value.adsList.length : 1,
                         position: sliderIndex,
                         onTap: (position) async {
                           await carouselControllerEx.animateToPage(position);
@@ -253,6 +256,7 @@ class _HomePageState extends State<HomePage> {
               })
 
     ),
-        ));
+        )
+  );
   }
 }
