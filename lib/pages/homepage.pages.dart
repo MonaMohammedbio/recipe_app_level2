@@ -22,21 +22,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 int sliderIndex = 0;
   CarouselController carouselControllerEx = CarouselController();
-  // List<Ad> adsList = [];
-  //
-  // void getAds() async {
-  //   var adsData = await rootBundle.loadString('Assets/data/sample.json');
-  //   var dataDecoded =
-  //       List<Map<String, dynamic>>.from(jsonDecode(adsData)["ads"]);
-  //   adsList = dataDecoded.map((e) => Ad.fromJason(e)).toList();
-  //   print(adsList);
-  //   setState(() {});
-  // }
+  List<Ad> adsList = [];
+
+  void getAds() async {
+    var adsData = await rootBundle.loadString('Assets/data/sample.json');
+    var dataDecoded =
+        List<Map<String, dynamic>>.from(jsonDecode(adsData)["ads"]);
+    adsList = dataDecoded.map((e) => Ad.fromJason(e)).toList();
+    print(adsList);
+    setState(() {});
+  }
 
   @override
   void initState() {
-    // getAds();
-   Provider.of<AdsProvider>(context,listen: false).getAds();
+    getAds();
+   // Provider.of<AdsProvider>(context,listen: false).getAds();
     super.initState();
 
   }
@@ -62,9 +62,10 @@ int sliderIndex = 0;
 
           child: SingleChildScrollView(
               //scrollDirection: Axis.vertical,
-             child: Consumer<AdsProvider>(builder: (context,value,child){
-
-                return Column(
+             // child: Consumer<AdsProvider>(builder: (context,value,child){
+             //
+             //    return
+          child:    Column(
                     children: [
 
                       Padding(
@@ -161,7 +162,7 @@ int sliderIndex = 0;
                               setState(() {});
                             },
                             enlargeStrategy: CenterPageEnlargeStrategy.height),
-                        items: value.adsList.map((ads) {
+                        items: adsList.map((ads) {
                           return Container(
                             width: MediaQuery.of(context).size.width,
                             margin: EdgeInsets.symmetric(horizontal: 5.0),
@@ -201,7 +202,7 @@ int sliderIndex = 0;
                       ),
 
                       DotsIndicator(
-                        dotsCount: (value.adsList?.length ?? 0) > 0 ? value.adsList.length : 1,
+                        dotsCount: adsList.length,
                         position: sliderIndex,
                         onTap: (position) async {
                           await carouselControllerEx.animateToPage(position);
@@ -252,11 +253,11 @@ int sliderIndex = 0;
                         height: 200,
                         child: Recommendedrecipes(),
                       )
-                    ]);
-              })
+                    ])
+              )
 
     ),
-        )
-  );
+        );
+
   }
 }

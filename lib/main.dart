@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:recipe_app_level2/pages/Splash.pages.dart';
 import 'package:recipe_app_level2/provider/Ads.provider.dart';
+import 'package:recipe_app_level2/provider/app_auth.provider.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,7 +33,7 @@ void main() async {
   }
   runApp(
 
-      MultiProvider(providers: [ChangeNotifierProvider(create: (context)=>AdsProvider())],
+      MultiProvider(providers: [ChangeNotifierProvider(create: (context)=>AppAuthProvider())],
         child: MyApp()));
 }
 
