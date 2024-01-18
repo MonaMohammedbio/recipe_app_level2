@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:recipe_app_level2/pages/homepage.pages.dart';
 import 'package:recipe_app_level2/pages/intro.pages.dart';
-import 'package:recipe_app_level2/pages/signin..pages.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 
 
@@ -17,6 +18,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  StreamSubscription<User?>?_listener;
   @override
   void initState() {
     initSplash();
@@ -25,7 +27,7 @@ class _SplashPageState extends State<SplashPage> {
 
   void initSplash() async {
     await Future.delayed(Duration(seconds: 3));
-   FirebaseAuth.instance.authStateChanges().listen((user) {
+  _listener= FirebaseAuth.instance.authStateChanges().listen((user) {
      if (user==null){
        Navigator.pushReplacement(
            context, MaterialPageRoute(builder: (_) => introPage()));
@@ -34,6 +36,11 @@ class _SplashPageState extends State<SplashPage> {
            context, MaterialPageRoute(builder: (_) => HomePage()));
      }
    });
+  }
+  @override
+  void dispose(){
+    _listener?.cancel();
+    super.dispose();
   }
 
   @override
@@ -55,7 +62,7 @@ class _SplashPageState extends State<SplashPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding:EdgeInsets.fromLTRB(110, 0,0,0),
+                padding:EdgeInsets.fromLTRB(110, 50,0,0),
 
                 child: Text(
                 textAlign: TextAlign.center,
@@ -63,17 +70,21 @@ class _SplashPageState extends State<SplashPage> {
                          fontSize: 15, color: Colors.white,fontFamily:"Hellix",fontWeight: FontWeight.w100),
                     "Cooking Done The Easy Way"),
               ),
+              CircularProgressIndicator(),
             ],
           ),
 
-          Padding(
-            padding: EdgeInsets.fromLTRB(60, 160,0,0),
-            child: Image(
-              color: Colors.black12,
-            colorBlendMode: BlendMode.darken,
-                height: 270,
-                width:270,
-                image: AssetImage("images/Logo.png")),
+
+          Container(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(60, 160,0,0),
+              child: Image(
+                color: Colors.black12,
+              colorBlendMode: BlendMode.darken,
+                  height: 270,
+                  width:270,
+                  image: AssetImage("images/Logo.png")),
+            ),
           )
         ]),
       ),

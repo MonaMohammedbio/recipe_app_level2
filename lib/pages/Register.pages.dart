@@ -1,10 +1,11 @@
-import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app_level2/pages/signin..pages.dart';
 
 import '../provider/app_auth.provider.dart';
+
+
 
 class registerPage extends StatefulWidget {
   const registerPage({super.key});
@@ -25,9 +26,10 @@ class _registerPageState extends State<registerPage> {
     return Scaffold(
         body: Center(
       child: Consumer<AppAuthProvider>(
-      builder: (context, AuthProvider, _) =>
+      builder: (context, authProvider, _) =>
         Form(
-          child: Stack(children: [
+          key:authProvider.formKey
+          ,child: Stack(children: [
             Container(
               width: 400,
               height: 1900,
@@ -69,7 +71,7 @@ class _registerPageState extends State<registerPage> {
                           width: 285,
                           height: 50,
                           child: TextFormField(
-                            controller: AuthProvider.nameController,
+                            controller: authProvider.nameController,
                             style: TextStyle(color: Colors.white),
                             decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person_4_outlined,
@@ -93,7 +95,7 @@ class _registerPageState extends State<registerPage> {
                           width: 285,
                           height: 50,
                           child: TextFormField(
-                              controller: AuthProvider.emailController,
+                              controller: authProvider.emailController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
@@ -110,16 +112,17 @@ class _registerPageState extends State<registerPage> {
                                   border: UnderlineInputBorder(),
                                   hintStyle: TextStyle(color: Colors.white60),
                                   hintText: "Email Adress"),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'email is required';
-                                }
-
-                                if (!EmailValidator.validate(value)) {
-                                  return 'Not Valid Email';
-                                }
-                                return null;
-                              }),
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return 'email is required';
+                              //   }
+                              //
+                              //   if (!EmailValidator.validate(value)) {
+                              //     return 'Not Valid Email';
+                              //   }
+                              //   return null;
+                              // }
+                           ),
                         ),
                       ),
                       Padding(
@@ -128,8 +131,8 @@ class _registerPageState extends State<registerPage> {
                           width: 285,
                           height: 50,
                           child: TextFormField(
-                              obscureText: AuthProvider.obsecureText,
-                              controller: AuthProvider.passwordController,
+                              obscureText: authProvider.obsecureText,
+                              controller: authProvider.passwordController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                   prefixIcon: Icon(
@@ -138,14 +141,16 @@ class _registerPageState extends State<registerPage> {
                                     size: 30,
                                   ),
                                   suffixIcon: InkWell(
-                                      onTap: () => AuthProvider.toggleObsecure(),
-                                      child: Icon(
-                                        AuthProvider.obsecureText
-                                            ? Icons.visibility_off_outlined
-                                            : Icons.visibility,
+                                      onTap: () => authProvider.toggleObsecure(),
+                                      child: authProvider.obsecureText
+                                      ?Icon(
+                                            Icons.visibility_off_outlined
+                                        ,color: Colors.white, size: 30,)
+                                      :Icon(
+                                             Icons.visibility,
                                         size: 30,
                                         color: Colors.white,
-                                      )),
+                                      ),),
                                   floatingLabelStyle: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
@@ -155,16 +160,17 @@ class _registerPageState extends State<registerPage> {
                                   border: UnderlineInputBorder(),
                                   hintStyle: TextStyle(color: Colors.white60),
                                   hintText: "Password"),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'password is required';
-                                }
-
-                                if (value.length < 6) {
-                                  return 'password too short';
-                                }
-                                return null;
-                              }),
+                              // validator: (value) {
+                              //   if (value == null || (value?.isEmpty??false)) {
+                              //     return 'password is required';
+                              //   }
+                              //
+                              //   if (value.length < 6) {
+                              //     return 'password too short';
+                              //   }
+                              //   return null;
+                              // }
+                             ),
                         ),
                       ),
                       Padding(
@@ -178,13 +184,8 @@ class _registerPageState extends State<registerPage> {
                                       borderRadius: BorderRadius.circular(10)),
                                   backgroundColor: Colors.deepOrange),
                               onPressed: () {
-                                // if (AuthProvider.formkey!.currentState
-                                //         ?.validate() ??
-                                //     false) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (contxt) => SigninPage()));
+                           authProvider.signUp(context);
+
                                 }
 
                               ,child: Text("Register",

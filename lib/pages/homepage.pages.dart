@@ -1,16 +1,21 @@
 import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:overlay_kit/overlay_kit.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app_level2/provider/Ads.provider.dart';
+import 'package:recipe_app_level2/provider/app_auth.provider.dart';
 import 'package:recipe_app_level2/widgets/fresh_recipes.widgets.dart';
 import 'package:recipe_app_level2/widgets/recommended.widgets.dart';
 
 import '../models/ad.models.dart';
+import '../widgets/ads_widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,23 +25,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-int sliderIndex = 0;
-  CarouselController carouselControllerEx = CarouselController();
-  List<Ad> adsList = [];
-
-  void getAds() async {
-    var adsData = await rootBundle.loadString('Assets/data/sample.json');
-    var dataDecoded =
-        List<Map<String, dynamic>>.from(jsonDecode(adsData)["ads"]);
-    adsList = dataDecoded.map((e) => Ad.fromJason(e)).toList();
-    print(adsList);
-    setState(() {});
-  }
-
+// int sliderIndex = 0;
+//   CarouselController carouselControllerEx = CarouselController();
+//   List<Ad> adsList = [];
+//
+//   void getAds() async {
+//     var adsData = await rootBundle.loadString('Assets/data/sample.json');
+//     var dataDecoded =
+//         List<Map<String, dynamic>>.from(jsonDecode(adsData)["ads"]);
+//     adsList = dataDecoded.map((e) => Ad.fromJason(e)).toList();
+//     print(adsList);
+//     setState(() {});
+//   }
+//
   @override
-  void initState() {
-    getAds();
-   // Provider.of<AdsProvider>(context,listen: false).getAds();
+  void initState(){
+
+
     super.initState();
 
   }
@@ -61,11 +66,8 @@ int sliderIndex = 0;
         body: SafeArea(
 
           child: SingleChildScrollView(
-              //scrollDirection: Axis.vertical,
-             // child: Consumer<AdsProvider>(builder: (context,value,child){
-             //
-             //    return
-          child:    Column(
+              scrollDirection: Axis.vertical,
+             child: Column(
                     children: [
 
                       Padding(
@@ -73,7 +75,7 @@ int sliderIndex = 0;
                         child: Align(
                             alignment: Alignment.topLeft,
                             child: Text(
-                              "Bonjour,Emma",
+                              "Bonjour,${FirebaseAuth.instance.currentUser?.displayName??"no name"}",
                               style: TextStyle(color: Colors.grey, fontSize: 16),
                             )),
                       ),
@@ -108,7 +110,7 @@ int sliderIndex = 0;
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 30),
+                            padding: EdgeInsets.only(left: 10),
                             child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.grey[200],
@@ -138,7 +140,7 @@ int sliderIndex = 0;
                                     color: Colors.black)),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 90),
+                            padding: const EdgeInsets.only(left: 75),
                             child: TextButton(
                                 onPressed: () {},
                                 child: Text("See All",
@@ -149,75 +151,7 @@ int sliderIndex = 0;
                           )
                         ],
                       ),
-                      CarouselSlider(
-                        carouselController: carouselControllerEx,
-                        options: CarouselOptions(
-                            height: 200.0,
-                            autoPlay: true,
-                            viewportFraction: 0.75,
-                            enlargeCenterPage: true,
-                            enlargeFactor: 0.3,
-                            onPageChanged: (index, _) {
-                              sliderIndex = index;
-                              setState(() {});
-                            },
-                            enlargeStrategy: CenterPageEnlargeStrategy.height),
-                        items: adsList.map((ads) {
-                          return Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.symmetric(horizontal: 5.0),
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(ads.image.toString()))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Container(
-                                  child: Text(
-                                      style: TextStyle(
-                                          backgroundColor: Colors.black38,
-                                          color: Colors.white),
-                                      ads.title.toString())),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      Row(
-                        verticalDirection: VerticalDirection.up,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                              onPressed: () async {
-                                await carouselControllerEx.nextPage();
-                              },
-                              icon: Icon(Icons.arrow_back_ios)),
-                          IconButton(
-                              onPressed: () async {
-                                await carouselControllerEx.previousPage();
-                              },
-                              icon: Icon(Icons.arrow_forward_ios))
-
-                        ],
-                      ),
-
-                      DotsIndicator(
-                        dotsCount: adsList.length,
-                        position: sliderIndex,
-                        onTap: (position) async {
-                          await carouselControllerEx.animateToPage(position);
-                          sliderIndex = position;
-                          setState(() {});
-                        },
-                        decorator: DotsDecorator(
-                          activeColor: Colors.deepOrange,
-                          size: const Size.square(9.0),
-                          activeSize: const Size(18.0, 9.0),
-                          activeShape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5.0)),
-                        ),
-                      ),
-
+                      AdsWidget(),
 
                       Container(
                         width: 360,
@@ -227,7 +161,7 @@ int sliderIndex = 0;
                       Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 20),
+                            padding: const EdgeInsets.only(left:20),
                             child: Text("Recommended",
                                 style: TextStyle(
                                     fontFamily: "Hellix",
@@ -236,7 +170,7 @@ int sliderIndex = 0;
                                     color: Colors.black)),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 150),
+                            padding: const EdgeInsets.only(left: 110),
                             child: TextButton(
                                 onPressed: () {},
                                 child: Text("See All",
@@ -252,7 +186,28 @@ int sliderIndex = 0;
                         width: 360,
                         height: 200,
                         child: Recommendedrecipes(),
-                      )
+                      ),
+                  ElevatedButton(onPressed: (){
+
+                    Provider.of <AppAuthProvider>(context,listen: false).signOut(context);
+                  }, child: Text("SignOut",style:TextStyle(color:Colors.deepOrange))),
+                      ElevatedButton(
+                          onPressed: () async {
+                            OverlayLoadingProgress.start();
+
+                            await FirebaseFirestore.instance
+                                .collection('ads')
+                                .doc("custiom id")
+                                .set({
+                              "title": "Less Carbs Meals",
+                              "image":
+                              "https://www.eatingwell.com/thmb/OAYhGtEKJmD7HW0Azd6uZCxVIiA=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/cheesy-portobello-chicken-cutlets-with-broccoli-ae1449c758834bb7ac75437e37a14065.jpg"
+                            });
+
+                            OverlayLoadingProgress.stop();
+                          },
+                          child: Text('add')),
+
                     ])
               )
 

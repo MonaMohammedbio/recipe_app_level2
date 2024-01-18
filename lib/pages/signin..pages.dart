@@ -1,4 +1,4 @@
-import 'package:email_validator/email_validator.dart';
+
 
 import 'package:flutter/material.dart';
 
@@ -30,9 +30,9 @@ Provider.of <AppAuthProvider>(context,listen:false).providerInit();
     return Scaffold(
       body: Center(
        
-        child: Consumer<AppAuthProvider>(builder:(context,AuthProvider,_)=>
+        child: Consumer<AppAuthProvider>(builder:(context,authProvider,_)=>
          Form(
-            key: AuthProvider.formkey,
+            key:authProvider.formKey,
             child: Stack(children: [
               Container(
                 width: 400,
@@ -72,8 +72,8 @@ Provider.of <AppAuthProvider>(context,listen:false).providerInit();
                   height: 50,
                   child: TextFormField(
                       style: TextStyle(color: Colors.white),
-                      keyboardType: TextInputType.emailAddress,
-                      controller: AuthProvider.emailController,
+                    keyboardType: TextInputType.emailAddress,
+                      controller: authProvider.emailController,
                       decoration: InputDecoration(
                           prefixIcon: Icon(
                             Icons.email_outlined,
@@ -90,13 +90,13 @@ Provider.of <AppAuthProvider>(context,listen:false).providerInit();
                           hintStyle: TextStyle(color: Colors.white60),
                           hintText: "Email Adress"),
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'email is required';
+                        if (value == null ||( value?.isEmpty??false)) {
+                          return 'Email is Required';
                         }
           
-                        if (!EmailValidator.validate(value)) {
-                          return 'Not Valid Email';
-                        }
+                        // if (!EmailValidator.validate(value)) {
+                        //   return 'Not Valid Email';
+                        // }
                         return null;
                       }),
                 ),
@@ -108,8 +108,8 @@ Provider.of <AppAuthProvider>(context,listen:false).providerInit();
                   height: 50,
                   child: TextFormField(
                       style: TextStyle(color: Colors.white),
-                      obscureText: AuthProvider.obsecureText,
-                      controller: AuthProvider.passwordController,
+                      obscureText: authProvider.obsecureText,
+                      controller:authProvider.passwordController,
                       decoration: InputDecoration(
                           prefixIcon: Icon(
                             Icons.lock_outline_rounded,
@@ -117,11 +117,11 @@ Provider.of <AppAuthProvider>(context,listen:false).providerInit();
                             size:30,
                           ),
                           suffixIcon: InkWell(
-                              onTap: () => AuthProvider.toggleObsecure(),
-                              child: Icon(
-                                AuthProvider.obsecureText
-                                    ? Icons.visibility_off_outlined
-                                    : Icons.visibility,
+                              onTap: () => authProvider.toggleObsecure(),
+                              child: authProvider.obsecureText
+                                    ? Icon(Icons.visibility_off_outlined, size: 20,
+                                color: Colors.white,)
+                                    :Icon( Icons.visibility,
                                 size: 20,
                                 color: Colors.white,
                               )),
@@ -135,13 +135,13 @@ Provider.of <AppAuthProvider>(context,listen:false).providerInit();
                           hintStyle: TextStyle(color: Colors.white60),
                           hintText: "Password"),
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'password is required';
+                        if (value == null || (value?.isEmpty??false)) {
+                          return 'Password is Required';
                         }
           
-                        if (value.length < 6) {
-                          return 'password too short';
-                        }
+                        // if (value.length < 6) {
+                        //   return 'password too short';
+                        // }
                         return null;
                       }),
                 ),
@@ -149,7 +149,9 @@ Provider.of <AppAuthProvider>(context,listen:false).providerInit();
               Padding(
                 padding: EdgeInsets.fromLTRB(200, 450, 0, 0),
                 child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+
+                    },
                     child: Text(
                       "Forget Password?",
                       style: TextStyle(color: Colors.cyan[800]),
@@ -165,16 +167,13 @@ Provider.of <AppAuthProvider>(context,listen:false).providerInit();
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           backgroundColor: Colors.deepOrange),
-                      onPressed: () async {
-                        if (AuthProvider.formkey!.currentState?.validate()??false) {
-
-
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomePage()));
-                        }
+                      onPressed: (){authProvider.signin(context);
                       },
+
+
+
+
+
                       child: Text("Sign in",
                           style: TextStyle(
                               color: Colors.white,
