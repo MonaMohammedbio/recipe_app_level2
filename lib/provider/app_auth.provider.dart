@@ -10,7 +10,7 @@ class AppAuthProvider extends ChangeNotifier {
   TextEditingController? emailController;
   TextEditingController? passwordController;
   TextEditingController? nameController;
-  bool obsecureText = true;
+  bool obsecureText = false;
 
   void providerInit() {
     formkey = GlobalKey<FormState>();
@@ -24,7 +24,7 @@ class AppAuthProvider extends ChangeNotifier {
     emailController = null;
     passwordController = null;
     nameController = null;
-    // obsecureText = false;
+    obsecureText = false;
   }
   void toggleObsecure(){
     obsecureText!=obsecureText;
