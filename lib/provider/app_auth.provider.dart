@@ -16,7 +16,7 @@ class AppAuthProvider extends ChangeNotifier {
   TextEditingController? emailController;
   TextEditingController? passwordController;
   TextEditingController? nameController;
-  bool obsecureText = true;
+  bool obsecureText = false;
 
   void providerInit() {
     formKey = GlobalKey<FormState>();
