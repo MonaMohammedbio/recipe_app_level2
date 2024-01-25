@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:recipe_app_level2/pages/Splash.pages.dart';
 import 'package:recipe_app_level2/provider/Ads.provider.dart';
 import 'package:recipe_app_level2/provider/app_auth.provider.dart';
+import 'package:recipe_app_level2/provider/favorites.provider.dart';
+import 'package:recipe_app_level2/provider/ingredients.provider.dart';
 
 
 
@@ -35,7 +37,9 @@ void main() async {
   runApp(
 
       MultiProvider(providers: [ChangeNotifierProvider(create: (context)=>AppAuthProvider()),
-        ChangeNotifierProvider(create: (context)=>AdsProvider())
+        ChangeNotifierProvider(create: (context)=>AdsProvider()),
+        ChangeNotifierProvider(create: (context)=>IngredientsProvider()),
+
       ],
         child: MyApp()));
 }

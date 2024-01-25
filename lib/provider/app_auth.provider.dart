@@ -122,6 +122,7 @@ class AppAuthProvider extends ChangeNotifier {
 
         if (credentials.user != null) {
           await credentials.user?.updateDisplayName(nameController!.text);
+          await credentials.user?.updatePhotoURL("${FirebaseAuth.instance.currentUser?.photoURL??"no photo"}");
           OverlayLoadingProgress.stop();
           providerDispose();
 

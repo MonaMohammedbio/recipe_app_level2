@@ -36,7 +36,8 @@ class _AdsWidgetState extends State<AdsWidget> {
         ? const CircularProgressIndicator()
         : (adProvider.adsList?.isEmpty ?? false)
         ? const Text('No Data Found')
-        : Column(children: [CarouselSlider(
+        : Column(children: [
+          CarouselSlider(
       carouselController: adProvider.carouselController,
       options: CarouselOptions(
           height: 200.0,
@@ -72,13 +73,13 @@ class _AdsWidgetState extends State<AdsWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           IconButton(
-              onPressed: () async {
-                await adProvider.carouselController?.nextPage();
+              onPressed: ()  async{
+               await  adProvider.carouselController?.nextPage();
               },
               icon: Icon(Icons.arrow_back_ios)),
           IconButton(
-              onPressed: () async {
-                await adProvider.carouselController?.previousPage();
+              onPressed: () async{
+                  await adProvider.carouselController?.previousPage();
               },
               icon: Icon(Icons.arrow_forward_ios))
 
@@ -88,9 +89,9 @@ class _AdsWidgetState extends State<AdsWidget> {
       DotsIndicator(
         dotsCount: adProvider.adsList!.length,
         position: adProvider.sliderIndex,
-        onTap: (position) async {
-          adProvider.onDotTapped(position);
-        },
+        onTap: (position)  =>
+          adProvider.onDotTapped(position),
+
         decorator: DotsDecorator(
           activeColor: Colors.deepOrange,
           size: const Size.square(9.0),
@@ -99,6 +100,8 @@ class _AdsWidgetState extends State<AdsWidget> {
               borderRadius: BorderRadius.circular(5.0)),
         ),
       ),
-    ],));
+    ],
+        )
+    );
   }
 }

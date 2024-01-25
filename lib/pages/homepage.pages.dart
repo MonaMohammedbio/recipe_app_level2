@@ -1,21 +1,24 @@
 import 'dart:convert';
 
-import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dots_indicator/dots_indicator.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:overlay_kit/overlay_kit.dart';
 import 'package:provider/provider.dart';
-import 'package:recipe_app_level2/provider/Ads.provider.dart';
+import 'package:recipe_app_level2/pages/favorites.pages.dart';
+
 import 'package:recipe_app_level2/provider/app_auth.provider.dart';
 import 'package:recipe_app_level2/widgets/fresh_recipes.widgets.dart';
 import 'package:recipe_app_level2/widgets/recommended.widgets.dart';
 
-import '../models/ad.models.dart';
+import '../models/recipes.models.dart';
 import '../widgets/ads_widgets.dart';
+import 'ingredients.pages.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,20 +41,71 @@ class _HomePageState extends State<HomePage> {
 //     setState(() {});
 //   }
 //
+//   @override
+//   void initState(){
+//     super.initState();
+//
+//   }
+  late ZoomDrawerController?controller;
+
   @override
-  void initState(){
-
-
+  void initState() {
+    controller= ZoomDrawerController();
     super.initState();
-
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+   return  ZoomDrawer(
+     menuBackgroundColor: Colors.white,
+     disableDragGesture: true,
+     mainScreenTapClose: true,
+      controller: controller,
+      menuScreen: Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ListTile(
+                onTap: () {
+                  controller?.close?.call();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => FavoritePage()));
+                },
+                leading: Icon(Icons.favorite_outline_rounded),
+                title: Text('Favorites')),
+              ListTile(
+                onTap: () {
+                  controller?.close?.call();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => IngredientPage()));
+                },
+                leading: Icon(Icons.food_bank),
+                title: Text('Ingredients'),
+              ),
+              ListTile(
+                onTap: () {
+                  Provider.of<AppAuthProvider>(context, listen: false)
+                      .signOut(context);
+                },
+                leading: Icon(Icons.logout),
+                title: Text('Sign Out'),
+
+              ),
+
+            ],
+          ),
+        ),
+      ),
+      mainScreen: Scaffold(
         appBar: AppBar(
             leading: IconButton(
-                onPressed: () {}, icon: FaIcon(FontAwesomeIcons.barsStaggered)),
+                onPressed: () {
+                  controller!.toggle!();
+                },
+
+                icon: FaIcon(FontAwesomeIcons.barsStaggered)),
             actions: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
@@ -65,9 +119,9 @@ class _HomePageState extends State<HomePage> {
             ]),
         body: SafeArea(
 
-          child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-             child: Column(
+            child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
                     children: [
 
                       Padding(
@@ -151,6 +205,7 @@ class _HomePageState extends State<HomePage> {
                           )
                         ],
                       ),
+
                       AdsWidget(),
 
                       Container(
@@ -187,32 +242,39 @@ class _HomePageState extends State<HomePage> {
                         height: 200,
                         child: Recommendedrecipes(),
                       ),
-                  ElevatedButton(onPressed: (){
+                      ElevatedButton(onPressed: (){
 
-                    Provider.of <AppAuthProvider>(context,listen: false).signOut(context);
-                  }, child: Text("SignOut",style:TextStyle(color:Colors.deepOrange))),
-                      ElevatedButton(
-                          onPressed: () async {
-                            OverlayLoadingProgress.start();
-
-                            await FirebaseFirestore.instance
-                                .collection('ads')
-                                .doc("custiom id")
-                                .set({
-                              "title": "Less Carbs Meals",
-                              "image":
-                              "https://www.eatingwell.com/thmb/OAYhGtEKJmD7HW0Azd6uZCxVIiA=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/cheesy-portobello-chicken-cutlets-with-broccoli-ae1449c758834bb7ac75437e37a14065.jpg"
-                            });
-
-                            OverlayLoadingProgress.stop();
-                          },
-                          child: Text('add')),
+                        Provider.of <AppAuthProvider>(context,listen: false).signOut(context);
+                      }, child: Text("SignOut",style:TextStyle(color:Colors.deepOrange))),
+                      // ElevatedButton(
+                      //     onPressed: () async {
+                      //       OverlayLoadingProgress.start();
+                      //
+                      //       await FirebaseFirestore.instance
+                      //           .collection('ads')
+                      //           .doc("custiom id")
+                      //           .set({
+                      //         "title": "Less Carbs Meals",
+                      //         "image":
+                      //         "https://www.eatingwell.com/thmb/OAYhGtEKJmD7HW0Azd6uZCxVIiA=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/cheesy-portobello-chicken-cutlets-with-broccoli-ae1449c758834bb7ac75437e37a14065.jpg"
+                      //       });
+                      //
+                      //       OverlayLoadingProgress.stop();
+                      //     },
+                      //     child: Text('add')),
 
                     ])
-              )
+            )
 
-    ),
-        );
+        ),
+      ),
+      borderRadius:5.0,
+      showShadow: true,
+      angle: -12.0,
+      drawerShadowsBackgroundColor: Colors.grey.shade300,
+      slideWidth: MediaQuery.of(context).size.width * 0.65,
+    );
+
 
   }
 }
