@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:overlay_kit/overlay_kit.dart';
 
 import '../models/recipes.models.dart';
+import '../provider/recipes.provider.dart';
 import '../utils/toast_message_status.dart';
 import '../widgets/toast_message.widgets.dart';
 
@@ -228,7 +229,10 @@ class _FavoritePageState extends State<FavoritePage> {
                                                 50, 0, 0, 50),
                                             child: IconButton(
                                               onPressed: () {
-                                                jsonEncode(addFavoriteToUser);
+                                                RecipesProvider.addRecipeToUserFavourite(
+                                                    RecipesProvider.recipesList![index].docId!,
+                                                    !(RecipesProvider.recpiesList![index].favorite_user_ids?.contains(FirebaseAuth.instance.currentUser?.uid)
+                                                        ?? false));
                                               },
                                               icon:
                                                   Icon(FontAwesomeIcons.heart),
@@ -250,34 +254,3 @@ class _FavoritePageState extends State<FavoritePage> {
   }
 }
 
-Future<void> addFavoriteToUser(String favoriteId, bool isAdd) async {
-  try {
-    OverlayLoadingProgress.start();
-    if (isAdd) {
-      await FirebaseFirestore.instance
-          .collection('recipes')
-          .doc(favoriteId)
-          .update({
-        "favorite_user_ids":
-            FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid])
-      });
-    } else {
-      await FirebaseFirestore.instance
-          .collection('recipes')
-          .doc(favoriteId)
-          .update({
-        "favorite_user_ids":
-            FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid])
-      });
-    }
-    OverlayLoadingProgress.stop();
-  } catch (e) {
-    OverlayLoadingProgress.stop();
-    OverlayToastMessage.show(
-      widget: ToastMessageWidget(
-        message: 'Error : ${e.toString()}',
-        toastMessageStatus: ToastMessageStatus.failed,
-      ),
-    );
-  }
-}
