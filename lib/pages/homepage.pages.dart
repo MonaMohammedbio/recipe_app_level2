@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +13,7 @@ import 'package:recipe_app_level2/widgets/fresh_recipes.widgets.dart';
 import 'package:recipe_app_level2/widgets/recommended.widgets.dart';
 
 import '../models/recipes.models.dart';
+import '../provider/recipes.provider.dart';
 import '../widgets/ads_widgets.dart';
 import 'ingredients.pages.dart';
 
@@ -51,6 +48,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     controller= ZoomDrawerController();
+    Provider.of<RecipesProvider>(context, listen: false).getRecipes();
     super.initState();
   }
   @override
@@ -121,7 +119,8 @@ class _HomePageState extends State<HomePage> {
 
             child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                child: Column(
+                child:
+                Column(
                     children: [
 
                       Padding(
@@ -211,7 +210,8 @@ class _HomePageState extends State<HomePage> {
                       Container(
                         width: 360,
                         height: 200,
-                        child: Recipes(),
+
+                        child: Recipes( ),
                       ),
                       Row(
                         children: [

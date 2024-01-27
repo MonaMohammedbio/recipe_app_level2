@@ -46,7 +46,9 @@ class _IngredientPageState extends State<IngredientPage> {
                 title: Text(ingredientProvider
                     .ingredientsList![index].name ??
                     'No Name'),
-              ))),
+              )
+          )
+      ),
     );
   }
 }

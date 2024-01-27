@@ -7,8 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:recipe_app_level2/pages/Splash.pages.dart';
 import 'package:recipe_app_level2/provider/Ads.provider.dart';
 import 'package:recipe_app_level2/provider/app_auth.provider.dart';
-import 'package:recipe_app_level2/provider/favorites.provider.dart';
+
 import 'package:recipe_app_level2/provider/ingredients.provider.dart';
+import 'package:recipe_app_level2/provider/recipes.provider.dart';
 
 
 
@@ -21,15 +22,11 @@ import 'firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
-    // var prefrence = await SharedPreferences.getInstance();
-    // GetIt.I.registerSingleton<SharedPreferences>(prefrence);
+
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    // if (PrefrencesService.prefs != null) {
-    //   print(
-    //       '========================= prefrences init Successfully ========================');
-    // }
+
   } catch (e) {
     print(
         '=========================Error In init Prefrences ${e}========================');
@@ -39,7 +36,7 @@ void main() async {
       MultiProvider(providers: [ChangeNotifierProvider(create: (context)=>AppAuthProvider()),
         ChangeNotifierProvider(create: (context)=>AdsProvider()),
         ChangeNotifierProvider(create: (context)=>IngredientsProvider()),
-
+        ChangeNotifierProvider(create: (context)=>RecipesProvider()),
       ],
         child: MyApp()));
 }
